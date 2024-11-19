@@ -506,3 +506,100 @@ result = {'type': 'dataframe', 'value': top_10_countries}
 
 [10 rows x 9 columns]}
 2024-11-18 10:02:51 [INFO] Executing Step 8: ResultParsing
+2024-11-18 20:54:01 [INFO] Question: top 10 rank countries
+2024-11-18 20:54:01 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-11-18 20:54:01 [INFO] Prompt ID: 7b5aad47-dda5-480b-80e2-f24ca8c8747a
+2024-11-18 20:54:01 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-11-18 20:54:01 [INFO] Executing Step 0: ValidatePipelineInput
+2024-11-18 20:54:01 [INFO] Executing Step 1: CacheLookup
+2024-11-18 20:54:01 [INFO] Executing Step 2: PromptGeneration
+2024-11-18 20:54:02 [INFO] Querying without using training data.
+2024-11-18 20:54:02 [INFO] Querying without using training docs.
+2024-11-18 20:54:02 [INFO] Using prompt: <dataframe>
+dfs[0]:156x9
+Overall rank,Country or region,Score,GDP per capita,Social support,Healthy life expectancy,Freedom to make life choices,Generosity,Perceptions of corruption
+49,Belarus,6.253,0.026,0.774,1.088,0.356,0.175,0.076
+76,Jamaica,5.425,0.912,1.312,0.884,0.574,0.11,0.077
+138,Lebanon,5.86,0.813,1.488,0.986,0.483,0.176,0.373
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ top 10 rank countries
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-11-18 20:54:02 [INFO] Executing Step 3: CodeGenerator
+2024-11-18 20:54:05 [INFO] Prompt used:
+            None
+            
+2024-11-18 20:54:05 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+top_10_countries = dfs[0].nlargest(10, 'Overall rank')[['Overall rank', 'Country or region']]
+
+result = {
+    "type": "dataframe",
+    "value": top_10_countries
+}
+            ```
+            
+2024-11-18 20:54:05 [INFO] Executing Step 4: CachePopulation
+2024-11-18 20:54:05 [INFO] Executing Step 5: CodeCleaning
+2024-11-18 20:54:05 [INFO] 
+Code running:
+```
+top_10_countries = dfs[0].nlargest(10, 'Overall rank')[['Overall rank', 'Country or region']]
+result = {'type': 'dataframe', 'value': top_10_countries}
+        ```
+2024-11-18 20:54:05 [INFO] Executing Step 6: CodeExecution
+2024-11-18 20:54:05 [INFO] Executing Step 7: ResultValidation
+2024-11-18 20:54:05 [INFO] Answer: {'type': 'dataframe', 'value':      Overall rank         Country or region
+155           156               South Sudan
+154           155  Central African Republic
+153           154               Afghanistan
+152           153                  Tanzania
+151           152                    Rwanda
+150           151                     Yemen
+149           150                    Malawi
+148           149                     Syria
+147           148                  Botswana
+146           147                     Haiti}
+2024-11-18 20:54:05 [INFO] Executing Step 8: ResultParsing
+2024-11-18 20:54:37 [INFO] Question: top 10 rank countries by GDP
+2024-11-18 20:54:37 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-11-18 20:54:37 [INFO] Prompt ID: 4fe6e2d5-8a59-43ac-8249-88bd940a4dac
+2024-11-18 20:54:37 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-11-18 20:54:37 [INFO] Executing Step 0: ValidatePipelineInput
+2024-11-18 20:54:37 [INFO] Executing Step 1: CacheLookup
+2024-11-18 20:54:37 [INFO] Executing Step 2: PromptGeneration
+2024-11-18 20:54:38 [INFO] Querying without using training data.

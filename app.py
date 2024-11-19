@@ -50,7 +50,7 @@ def main():
 
         with col1:
             st.subheader("🔍 Data Preview")
-            st.dataframe(data.head(), use_container_width=True)
+            st.dataframe(data, use_container_width=True)
             
             st.subheader("📊 Data Insights")
             with st.expander("View Statistics", expanded=True):
