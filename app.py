@@ -9,7 +9,7 @@ import plotly.express as px
 load_dotenv()
 
 # Initialize API Key
-openai_api_key = os.getenv("PANDASAI_API_KEY")
+openai_api_key = os.environ.get("PANDASAI_API_KEY")
 
 # Function to interact with CSV
 def chat_with_csv(df, prompt):
