@@ -15,18 +15,22 @@ openai_api_key = os.environ["PANDASAI_API_KEY"]
 def chat_with_csv(df, prompt):
 
     st.write(f"Loaded API Key: {openai_api_key is not None}")
+    try:
 
-    pandas_ai = Agent(df)
-    result = pandas_ai.chat(prompt)
-    if isinstance(result, pd.DataFrame):
+        pandas_ai = Agent(df)
+        st.write("Agent initialized successfully.")
+        result = pandas_ai.chat(prompt)
+        if isinstance(result, pd.DataFrame):
+            return result
+        elif isinstance(result, list) or isinstance(result, dict):
+            try:
+                result_df = pd.DataFrame(result)
+                return result_df
+            except Exception as e:
+                st.error(f"Could not convert result to DataFrame: {e}")
         return result
-    elif isinstance(result, list) or isinstance(result, dict):
-        try:
-            result_df = pd.DataFrame(result)
-            return result_df
-        except Exception as e:
-            st.error(f"Could not convert result to DataFrame: {e}")
-    return result
+    except Exception as e:
+        st.error(f"Error during query processing: {e}")
 
 # Main Streamlit App
 def main():
@@ -51,45 +55,53 @@ def main():
         return
 
     if input_csv:
+        try:
         # Load and display CSV
-        data = pd.read_csv(input_csv)
-        col1, col2 = st.columns([2, 3])
+            data = pd.read_csv(input_csv)
+            st.write(f"DataFrame loaded successfully with shape: {data.shape}")
+            if data.empty:
+                st.error("The uploaded CSV is empty. Please upload a valid file.")
+                return
+            col1, col2 = st.columns([2, 3])
 
-        with col1:
-            st.subheader("🔍 Data Preview")
-            st.dataframe(data, use_container_width=True)
-            
-            st.subheader("📊 Data Insights")
-            with st.expander("View Statistics", expanded=True):
-                st.write(data.describe())
+            with col1:
+                st.subheader("🔍 Data Preview")
+                st.dataframe(data, use_container_width=True)
+                
+                st.subheader("📊 Data Insights")
+                with st.expander("View Statistics", expanded=True):
+                    st.write(data.describe())
 
-        with col2:
-            st.subheader("💬 Chat with your CSV")
-            input_text = st.text_area("Enter your query:", placeholder="e.g., What is the average sales for each category?")
+            with col2:
+                st.subheader("💬 Chat with your CSV")
+                input_text = st.text_area("Enter your query:", placeholder="e.g., What is the average sales for each category?")
 
-            if st.button("Ask CSV", key="ask_button"):
-                if input_text:
-                    with st.spinner("Analyzing your query..."):
-                        result = chat_with_csv(data, input_text)
-                    
-                    # Display results
-                    if isinstance(result, pd.DataFrame):
-                        st.success("Here are the results:")
-                        st.dataframe(result, use_container_width=True)
+                if st.button("Ask CSV", key="ask_button"):
+                    if input_text:
+                        with st.spinner("Analyzing your query..."):
+                            result = chat_with_csv(data, input_text)
+                        
+                        # Display results
+                        if isinstance(result, pd.DataFrame):
+                            st.success("Here are the results:")
+                            st.dataframe(result, use_container_width=True)
 
-                        # Generate a scatter plot if result is numeric
-                        if len(result.columns) >= 2:
-                            try:
-                                fig = px.scatter(result, x=result.columns[0], y=result.columns[1],
-                                                 title="Query Result Visualization")
-                                st.plotly_chart(fig, use_container_width=True)
-                            except Exception as e:
-                                st.warning("Unable to generate visualization for this result.")
+                            # Generate a scatter plot if result is numeric
+                            if len(result.columns) >= 2:
+                                try:
+                                    fig = px.scatter(result, x=result.columns[0], y=result.columns[1],
+                                                    title="Query Result Visualization")
+                                    st.plotly_chart(fig, use_container_width=True)
+                                except Exception as e:
+                                    st.warning("Unable to generate visualization for this result.")
+                        else:
+                            st.success("Here are the results:")
+                            st.write(result)
                     else:
-                        st.success("Here are the results:")
-                        st.write(result)
-                else:
-                    st.warning("⚠️ Please enter a query.")
+                        st.warning("⚠️ Please enter a query.")
+        except Exception as e:
+            st.error(f"Error loading CSV: {e}")
+            return
     else:
         # Prompt user to upload a file
         st.info("👈 Upload a CSV file from the sidebar to get started!")
