@@ -13,6 +13,11 @@ openai_api_key = os.environ.get("PANDASAI_API_KEY")
 
 # Function to interact with CSV
 def chat_with_csv(df, prompt):
+
+    if not openai_api_key:
+        st.error("API Key is not set. Please configure it in the environment.")
+        return "API Key missing"
+
     pandas_ai = Agent(df)
     result = pandas_ai.chat(prompt)
     if isinstance(result, pd.DataFrame):
