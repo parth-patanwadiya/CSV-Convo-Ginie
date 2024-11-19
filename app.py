@@ -9,14 +9,12 @@ import plotly.express as px
 load_dotenv()
 
 # Initialize API Key
-openai_api_key = os.environ.get("PANDASAI_API_KEY")
+openai_api_key = os.environ["PANDASAI_API_KEY"]
 
 # Function to interact with CSV
 def chat_with_csv(df, prompt):
 
-    if not openai_api_key:
-        st.error("API Key is not set. Please configure it in the environment.")
-        return "API Key missing"
+    st.write(f"Loaded API Key: {openai_api_key is not None}")
 
     pandas_ai = Agent(df)
     result = pandas_ai.chat(prompt)
