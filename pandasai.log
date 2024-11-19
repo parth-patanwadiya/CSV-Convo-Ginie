@@ -603,3 +603,82 @@ result = {'type': 'dataframe', 'value': top_10_countries}
 2024-11-18 20:54:37 [INFO] Executing Step 1: CacheLookup
 2024-11-18 20:54:37 [INFO] Executing Step 2: PromptGeneration
 2024-11-18 20:54:38 [INFO] Querying without using training data.
+2024-11-18 20:54:39 [INFO] Querying without using training docs.
+2024-11-18 20:54:39 [INFO] Using prompt: <dataframe>
+dfs[0]:156x9
+Overall rank,Country or region,Score,GDP per capita,Social support,Healthy life expectancy,Freedom to make life choices,Generosity,Perceptions of corruption
+2,Guatemala,5.603,0.931,1.475,0.677,0.332,0.111,0.14
+74,Senegal,3.334,0.393,1.52,0.443,0.558,0.375,0.373
+5,Portugal,7.307,1.12,1.033,1.012,0.439,0.28,0.077
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ top 10 rank countries by GDP
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-11-18 20:54:39 [INFO] Executing Step 3: CodeGenerator
+2024-11-18 20:54:41 [INFO] Prompt used:
+            None
+            
+2024-11-18 20:54:41 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+top_10_gdp_countries = dfs[0].sort_values(by='GDP per capita', ascending=False).head(10)[['Country or region', 'GDP per capita']]
+
+# Declare result var
+result = {"type": "dataframe", "value": top_10_gdp_countries}
+            ```
+            
+2024-11-18 20:54:41 [INFO] Executing Step 4: CachePopulation
+2024-11-18 20:54:41 [INFO] Executing Step 5: CodeCleaning
+2024-11-18 20:54:41 [INFO] 
+Code running:
+```
+top_10_gdp_countries = dfs[0].sort_values(by='GDP per capita', ascending=False).head(10)[['Country or region', 'GDP per capita']]
+result = {'type': 'dataframe', 'value': top_10_gdp_countries}
+        ```
+2024-11-18 20:54:41 [INFO] Executing Step 6: CodeExecution
+2024-11-18 20:54:41 [INFO] Executing Step 7: ResultValidation
+2024-11-18 20:54:41 [INFO] Answer: {'type': 'dataframe', 'value':        Country or region  GDP per capita
+28                 Qatar           1.684
+13            Luxembourg           1.609
+33             Singapore           1.572
+20  United Arab Emirates           1.503
+50                Kuwait           1.500
+15               Ireland           1.499
+2                 Norway           1.488
+5            Switzerland           1.452
+75             Hong Kong           1.438
+18         United States           1.433}
+2024-11-18 20:54:41 [INFO] Executing Step 8: ResultParsing
