@@ -13,7 +13,7 @@ openai_api_key = os.getenv("PANDASAI_API_KEY")
 
 # Function to interact with CSV
 def chat_with_csv(df, prompt):
-    pandas_ai = Agent(df, api_key=openai_api_key)
+    pandas_ai = Agent(df)
     result = pandas_ai.chat(prompt)
     if isinstance(result, pd.DataFrame):
         return result
