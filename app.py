@@ -13,7 +13,7 @@ openai_api_key = os.getenv("PANDASAI_API_KEY")
 
 # Function to interact with CSV
 def chat_with_csv(df, prompt):
-    pandas_ai = Agent(df)
+    pandas_ai = Agent(df, api_key=openai_api_key)
     result = pandas_ai.chat(prompt)
     if isinstance(result, pd.DataFrame):
         return result
@@ -43,6 +43,10 @@ def main():
     st.title("Welcome to CSV Convo Genie! 🚀")
     st.markdown("### Unlock the power of AI to analyze your CSV data effortlessly.")
     
+    if not openai_api_key:
+        st.error("API Key is not set. Please configure it in the environment.")
+        return
+
     if input_csv:
         # Load and display CSV
         data = pd.read_csv(input_csv)
